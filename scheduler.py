@@ -10,7 +10,7 @@ class Scheduler(object):
         self.scheduler = BackgroundScheduler(daemon=True)
         self.jobs = []
         self._runner = None
-        self._interval = 60
+        self._interval = 30
         if app is not None:
             self.init_app(app)
 
@@ -51,11 +51,14 @@ class Scheduler(object):
         for job in self.jobs:
             job()
 
-    def runner(self):
+    def runner(self, interval: int = None):
         def decorator(f):
-            if not hasattr(self, 'jobs'):
-                self.jobs = []
-            self.jobs.append(f)
+            if interval is not None:
+                self.scheduler.add_job(f, 'interval', seconds=interval)
+            else:
+                if not hasattr(self, 'jobs'):
+                    self.jobs = []
+                self.jobs.append(f)
             return f
 
         return decorator
