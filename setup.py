@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 
 setup(
     name='Flask-Scheduler',
-    version='0.0.1',
+    version='0.0.4',
     url='https://github.com/furqonat/flask-scheduler',
     license='MIT',
     author='Furqon Romdhani',
@@ -16,7 +16,8 @@ setup(
     description='Background scheduler for Flask',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    py_modules=['flask_scheduler'],
+    packages=['flask_scheduler'],
+    include_package_data=True,
     zip_safe=False,
     platforms='any',
     install_requires=['Flask', 'apscheduler'],
