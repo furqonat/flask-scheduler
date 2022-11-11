@@ -31,11 +31,6 @@ class Scheduler(object):
         self._interval = app.config['SCHEDULER_API_INTERVAL']
         self.scheduler.add_job(self._run, 'interval', seconds=self._interval)
 
-        @app.teardown_appcontext
-        def shutdown():
-            self.scheduler.shutdown()
-            atexit.unregister(lambda: self.scheduler.shutdown())
-
     @staticmethod
     def _default_configuration(app: Flask) -> None:
         """
@@ -52,6 +47,12 @@ class Scheduler(object):
             job()
 
     def runner(self, interval: int = None):
+        """
+        Decorator to register a function as a job.
+
+        :param interval: default interval for the job is 30 seconds
+        :return:
+        """
         def decorator(f):
             if interval is not None:
                 self.scheduler.add_job(f, 'interval', seconds=interval)
