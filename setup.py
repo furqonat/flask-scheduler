@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 
 setup(
     name='Flask-Scheduler',
-    version='0.0.4',
+    version='0.0.5',
     url='https://github.com/furqonat/flask-scheduler',
     license='MIT',
     author='Furqon Romdhani',
