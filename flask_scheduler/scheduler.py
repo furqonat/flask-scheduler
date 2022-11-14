@@ -6,7 +6,7 @@ from flask import Flask
 
 class Scheduler(object):
 
-    def __init__(self, app: Flask = None) -> None:
+    def __init__(self, app: Flask = None) -> None:  # type: ignore
         self.scheduler = BackgroundScheduler(daemon=True)
         self.jobs = []
         self._runner = None
@@ -14,7 +14,7 @@ class Scheduler(object):
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app: Flask = None) -> None:
+    def init_app(self, app: Flask = None) -> None:  # type: ignore
         """
         Initialize the application for use with this
 
@@ -25,6 +25,7 @@ class Scheduler(object):
             app.extensions = {}
         app.extensions['scheduler'] = self
         self._default_configuration(app)
+        print('application intialized')
 
         self.scheduler.start()
         atexit.register(lambda: self.scheduler.shutdown())
@@ -46,7 +47,7 @@ class Scheduler(object):
         for job in self.jobs:
             job()
 
-    def runner(self, interval: int = None):
+    def runner(self, interval: int = None):  # type: ignore
         """
         Decorator to register a function as a job.
 
@@ -63,3 +64,11 @@ class Scheduler(object):
             return f
 
         return decorator
+    
+    def register_job(self, job, interval: int = None): # type: ignore
+        if interval is not None:
+            self.scheduler.add_job(job, 'interval', seconds=interval)
+        else:
+            if not hasattr(self, 'jobs'):
+                self.jobs = []
+            self.jobs.append(job)
